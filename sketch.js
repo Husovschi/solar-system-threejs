@@ -24,7 +24,7 @@ const sketch = ({ context }) => {
     canvas: context.canvas,
     alpha: true,
   });
-  renderer.setClearColor("#121212", 1);
+  renderer.setClearColor("#02041C", 1);
 
   // CAMERA
   const camera = new THREE.PerspectiveCamera(100, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 1000);
