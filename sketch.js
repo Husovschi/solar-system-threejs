@@ -172,7 +172,6 @@ function createPlanet(scene, mesh, group, x, scale) {
   mesh.scale.setScalar(scale);
   group.add(mesh);
   scene.add(group);
-  return group, mesh;
 }
 
 function createSpotlights(scene) {
