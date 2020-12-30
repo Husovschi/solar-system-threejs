@@ -36,10 +36,9 @@ const sketch = ({ context }) => {
 
   const loader = new THREE.TextureLoader();
   const scene = new THREE.Scene();
-  // const spaceTexture = loader.load("textures/milkyway.jpg");
-  // scene.background = spaceTexture;
   const geometry = new THREE.SphereGeometry(1, 48, 20);
 
+  // BACKGROND STARS
   const starsGeometry = new THREE.Geometry();
   for ( let i = 0; i < 25000; i ++ ) {
     let star = new THREE.Vector3();
@@ -52,6 +51,7 @@ const sketch = ({ context }) => {
   const stars = new THREE.Points( starsGeometry, starsMaterial );
   scene.add( stars );
 
+  // SUN
   const sunTexture = loader.load("textures/sun.jpg");
   const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
   const sunMesh = new THREE.Mesh(geometry, sunMaterial);
@@ -59,6 +59,7 @@ const sketch = ({ context }) => {
   sunMesh.scale.setScalar(10);
   scene.add(sunMesh);
 
+  // PLANETS
   const mercuryTexture = loader.load("textures/mercury.jpg");
   const mercuryMaterial = new THREE.MeshPhongMaterial({ map: mercuryTexture });
   const mercuryGroup = new THREE.Group();
@@ -113,9 +114,7 @@ const sketch = ({ context }) => {
   const plutoMesh = new THREE.Mesh(geometry, plutoMaterial);
   createPlanet(scene, plutoMesh, plutoGroup, 64, 0.5);
 
-  /*
-   * LIGHTING
-   */
+  // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
   light.position.set(0, 0, 0);
   scene.add(light);
