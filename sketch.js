@@ -24,7 +24,7 @@ const sketch = ({ context }) => {
     canvas: context.canvas,
     alpha: true,
   });
-  renderer.setClearColor("#121212", 1);
+  renderer.setClearColor("#02041C", 1);
 
   // CAMERA
   const camera = new THREE.PerspectiveCamera(100, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 1000);
@@ -34,100 +34,93 @@ const sketch = ({ context }) => {
   const controls = new THREE.OrbitControls(camera, context.canvas);
   controls.target.set(30, 0, 0);
 
-  /*
-   * TEXTURES
-   */
   const loader = new THREE.TextureLoader();
-
-  const sunTexture = loader.load("assets/sun.jpg");
-  const mercuryTexture = loader.load("assets/mercury.jpg");
-  const venusTexture = loader.load("assets/venus.jpg");
-  const earthTexture = loader.load("assets/earth.jpg");
-  const marsTexture = loader.load("assets/mars.jpg");
-  const jupiterTexture = loader.load("assets/jupiter.jpg");
-  const saturnTexture = loader.load("assets/saturn.jpg");
-  const uranusTexture = loader.load("assets/uranus.jpg");
-  const neptuneTexture = loader.load("assets/neptune.jpg");
-  const plutoTexture = loader.load("assets/pluto.jpeg");
-
-  /*
-   * MATERIALS
-   */
-  const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
-  const mercuryMaterial = new THREE.MeshStandardMaterial({ map: mercuryTexture });
-  const venusMaterial = new THREE.MeshStandardMaterial({ map: venusTexture });
-  const earthMaterial = new THREE.MeshStandardMaterial({ map: earthTexture});
-  const marsMaterial = new THREE.MeshStandardMaterial({ map: marsTexture });
-  const jupiterMaterial = new THREE.MeshStandardMaterial({ map: jupiterTexture });
-  const saturnMaterial = new THREE.MeshStandardMaterial({ map: saturnTexture });
-  const uranusMaterial = new THREE.MeshStandardMaterial({ map: uranusTexture });
-  const neptuneMaterial = new THREE.MeshStandardMaterial({ map: neptuneTexture });
-  const plutoMaterial = new THREE.MeshStandardMaterial({ map: plutoTexture });
-
-  /*
-   * MESH
-   */
   const scene = new THREE.Scene();
-  const geometry = new THREE.SphereGeometry(1, 32, 16);
+  const geometry = new THREE.SphereGeometry(1, 48, 20);
 
+  // BACKGROND STARS
+  const starsGeometry = new THREE.Geometry();
+  for ( let i = 0; i < 25000; i ++ ) {
+    let star = new THREE.Vector3();
+    star.x = THREE.Math.randFloatSpread( 2000 );
+    star.y = THREE.Math.randFloatSpread( 2000 );
+    star.z = THREE.Math.randFloatSpread( 2000 );
+    starsGeometry.vertices.push( star );
+  }
+  const starsMaterial = new THREE.PointsMaterial( { color: 0xffffff } );
+  const stars = new THREE.Points( starsGeometry, starsMaterial );
+  scene.add( stars );
+
+  // SUN
+  const sunTexture = loader.load("textures/sun.jpg");
+  const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
   const sunMesh = new THREE.Mesh(geometry, sunMaterial);
   sunMesh.position.set(0, 0, 0);
   sunMesh.scale.setScalar(10);
   scene.add(sunMesh);
 
+  // PLANETS
+  const mercuryTexture = loader.load("textures/mercury.jpg");
+  const mercuryMaterial = new THREE.MeshPhongMaterial({ map: mercuryTexture });
   const mercuryGroup = new THREE.Group();
   const mercuryMesh = new THREE.Mesh(geometry, mercuryMaterial);
   createPlanet(scene, mercuryMesh, mercuryGroup, 25, 0.8);
 
+  const venusTexture = loader.load("textures/venus.jpg");
+  const venusMaterial = new THREE.MeshPhongMaterial({ map: venusTexture });
   const venusGroup = new THREE.Group();
   const venusMesh = new THREE.Mesh(geometry, venusMaterial);
   createPlanet(scene, venusMesh, venusGroup, 28, 0.9);
 
+  const earthTexture = loader.load("textures/earth.jpg");
+  const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture});
   const earthGroup = new THREE.Group();
   const earthMesh = new THREE.Mesh(geometry, earthMaterial);
   createPlanet(scene, earthMesh, earthGroup, 31, 1);
 
+  const marsTexture = loader.load("textures/mars.jpg");
+  const marsMaterial = new THREE.MeshPhongMaterial({ map: marsTexture });
   const marsGroup = new THREE.Group();
   const marsMesh = new THREE.Mesh(geometry, marsMaterial);
   createPlanet(scene, marsMesh, marsGroup, 34, 0.8);
 
+  const jupiterTexture = loader.load("textures/jupiter.jpg");
+  const jupiterMaterial = new THREE.MeshPhongMaterial({ map: jupiterTexture });
   const jupiterGroup = new THREE.Group();
   const jupiterMesh = new THREE.Mesh(geometry, jupiterMaterial);
   createPlanet(scene, jupiterMesh, jupiterGroup, 42, 3.5);
 
+  const saturnTexture = loader.load("textures/saturn.jpg");
+  const saturnMaterial = new THREE.MeshPhongMaterial({ map: saturnTexture });
   const saturnGroup = new THREE.Group();
   const saturnMesh = new THREE.Mesh(geometry, saturnMaterial);
   createPlanet(scene, saturnMesh, saturnGroup, 50, 2.9);
 
+  const uranusTexture = loader.load("textures/uranus.jpg");
+  const uranusMaterial = new THREE.MeshPhongMaterial({ map: uranusTexture });
   const uranusGroup = new THREE.Group();
   const uranusMesh = new THREE.Mesh(geometry, uranusMaterial);
   createPlanet(scene, uranusMesh, uranusGroup, 56, 1.7);
 
+  const neptuneTexture = loader.load("textures/neptune.jpg");
+  const neptuneMaterial = new THREE.MeshPhongMaterial({ map: neptuneTexture });
   const neptuneGroup = new THREE.Group();
   const neptuneMesh = new THREE.Mesh(geometry, neptuneMaterial);
   createPlanet(scene, neptuneMesh, neptuneGroup, 60, 1.65);
 
+  const plutoTexture = loader.load("textures/pluto.jpeg");
+  const plutoMaterial = new THREE.MeshPhongMaterial({ map: plutoTexture });
   const plutoGroup = new THREE.Group();
   const plutoMesh = new THREE.Mesh(geometry, plutoMaterial);
   createPlanet(scene, plutoMesh, plutoGroup, 64, 0.5);
 
-  /*
-   * LIGHTING
-   */
+  // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
   light.position.set(0, 0, 0);
   scene.add(light);
 
   // illuminate the sun
   createSpotlights(scene);
-
-  /*
-   * HELPERS
-   */
-  // scene.add(new THREE.PointLightHelper(light, 0.2));
-  // scene.add( new THREE.SpotLightHelper( spotLightLeft ));
-  // scene.add(new THREE.GridHelper(75, 50));
-
 
   // draw each frame
   return {
