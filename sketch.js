@@ -82,7 +82,10 @@ const sketch = ({ context }) => {
   const moonMaterial = new THREE.MeshPhongMaterial({ map: moonTexture});
   const moonGroup = new THREE.Group();
   const moonMesh = new THREE.Mesh(geometry, moonMaterial);
-  createPlanet(earthGroup, moonMesh, moonGroup, 33, 0.3);
+  moonMesh.position.set(x, 0, 0);
+  moonMesh.scale.setScalar(scale);
+  moonGroup.add(moonMesh);
+  earthGroup.add(group);
 
   const marsTexture = loader.load("textures/mars.jpg");
   const marsMaterial = new THREE.MeshPhongMaterial({ map: marsTexture });
