@@ -1,7 +1,4 @@
-// Ensure ThreeJS is in global scope for the 'examples/'
 global.THREE = require("three");
-
-// Include any additional ThreeJS examples below
 require("three/examples/js/controls/OrbitControls");
 
 const canvasSketch = require("canvas-sketch");
@@ -25,10 +22,12 @@ const sketch = ({ context }) => {
     alpha: true,
   });
   renderer.setClearColor("#02041C", 1);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   // CAMERA
   const camera = new THREE.PerspectiveCamera(100, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 1000);
-  camera.position.set(30, 5, 35);
+  camera.position.set(0, 5, 50);
 
   // ORBIT CONTROLS
   const controls = new THREE.OrbitControls(camera, context.canvas);
@@ -61,19 +60,19 @@ const sketch = ({ context }) => {
 
   // PLANETS
   const mercuryTexture = loader.load("textures/mercury.jpg");
-  const mercuryMaterial = new THREE.MeshPhongMaterial({ map: mercuryTexture });
+  const mercuryMaterial = new THREE.MeshLambertMaterial({ map: mercuryTexture });
   const mercuryGroup = new THREE.Group();
   const mercuryMesh = new THREE.Mesh(geometry, mercuryMaterial);
   createPlanet(scene, mercuryMesh, mercuryGroup, 25, 0.8);
 
   const venusTexture = loader.load("textures/venus.jpg");
-  const venusMaterial = new THREE.MeshPhongMaterial({ map: venusTexture });
+  const venusMaterial = new THREE.MeshLambertMaterial({ map: venusTexture });
   const venusGroup = new THREE.Group();
   const venusMesh = new THREE.Mesh(geometry, venusMaterial);
   createPlanet(scene, venusMesh, venusGroup, 28, 0.9);
 
   const earthTexture = loader.load("textures/earth.jpg");
-  const earthMaterial = new THREE.MeshPhongMaterial({ map: earthTexture});
+  const earthMaterial = new THREE.MeshLambertMaterial({ map: earthTexture});
   const earthGroup = new THREE.Group();
   const earthMesh = new THREE.Mesh(geometry, earthMaterial);
   createPlanet(scene, earthMesh, earthGroup, 31, 1);
@@ -82,43 +81,43 @@ const sketch = ({ context }) => {
   const moonMaterial = new THREE.MeshPhongMaterial({ map: moonTexture});
   const moonGroup = new THREE.Group();
   const moonMesh = new THREE.Mesh(geometry, moonMaterial);
-  moonMesh.position.set(x, 0, 0);
-  moonMesh.scale.setScalar(scale);
+  moonMesh.position.set(33, 0, 0);
+  moonMesh.scale.setScalar(0.3);
   moonGroup.add(moonMesh);
-  earthGroup.add(group);
+  earthGroup.add(moonGroup);
 
   const marsTexture = loader.load("textures/mars.jpg");
-  const marsMaterial = new THREE.MeshPhongMaterial({ map: marsTexture });
+  const marsMaterial = new THREE.MeshLambertMaterial({ map: marsTexture });
   const marsGroup = new THREE.Group();
   const marsMesh = new THREE.Mesh(geometry, marsMaterial);
   createPlanet(scene, marsMesh, marsGroup, 37, 0.8);
 
   const jupiterTexture = loader.load("textures/jupiter.jpg");
-  const jupiterMaterial = new THREE.MeshPhongMaterial({ map: jupiterTexture });
+  const jupiterMaterial = new THREE.MeshLambertMaterial({ map: jupiterTexture });
   const jupiterGroup = new THREE.Group();
   const jupiterMesh = new THREE.Mesh(geometry, jupiterMaterial);
   createPlanet(scene, jupiterMesh, jupiterGroup, 45, 3.5);
 
   const saturnTexture = loader.load("textures/saturn.jpg");
-  const saturnMaterial = new THREE.MeshPhongMaterial({ map: saturnTexture });
+  const saturnMaterial = new THREE.MeshLambertMaterial({ map: saturnTexture });
   const saturnGroup = new THREE.Group();
   const saturnMesh = new THREE.Mesh(geometry, saturnMaterial);
   createPlanet(scene, saturnMesh, saturnGroup, 54, 2.9);
 
   const uranusTexture = loader.load("textures/uranus.jpg");
-  const uranusMaterial = new THREE.MeshPhongMaterial({ map: uranusTexture });
+  const uranusMaterial = new THREE.MeshLambertMaterial({ map: uranusTexture });
   const uranusGroup = new THREE.Group();
   const uranusMesh = new THREE.Mesh(geometry, uranusMaterial);
   createPlanet(scene, uranusMesh, uranusGroup, 60, 1.7);
 
   const neptuneTexture = loader.load("textures/neptune.jpg");
-  const neptuneMaterial = new THREE.MeshPhongMaterial({ map: neptuneTexture });
+  const neptuneMaterial = new THREE.MeshLambertMaterial({ map: neptuneTexture });
   const neptuneGroup = new THREE.Group();
   const neptuneMesh = new THREE.Mesh(geometry, neptuneMaterial);
   createPlanet(scene, neptuneMesh, neptuneGroup, 65, 1.65);
 
   const plutoTexture = loader.load("textures/pluto.jpeg");
-  const plutoMaterial = new THREE.MeshPhongMaterial({ map: plutoTexture });
+  const plutoMaterial = new THREE.MeshLambertMaterial({ map: plutoTexture });
   const plutoGroup = new THREE.Group();
   const plutoMesh = new THREE.Mesh(geometry, plutoMaterial);
   createPlanet(scene, plutoMesh, plutoGroup, 70, 0.5);
@@ -126,6 +125,7 @@ const sketch = ({ context }) => {
   // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
   light.position.set(0, 0, 0);
+  light.castShadow = true;
   scene.add(light);
 
   // illuminate the sun
@@ -179,6 +179,8 @@ const sketch = ({ context }) => {
 };
 
 function createPlanet(scene, mesh, group, x, scale) {
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
   mesh.position.set(x, 0, 0);
   mesh.scale.setScalar(scale);
   group.add(mesh);
