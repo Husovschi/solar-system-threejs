@@ -78,41 +78,50 @@ const sketch = ({ context }) => {
   const earthMesh = new THREE.Mesh(geometry, earthMaterial);
   createPlanet(scene, earthMesh, earthGroup, 31, 1);
 
+  const moonTexture = loader.load("textures/moon.jpg");
+  const moonMaterial = new THREE.MeshPhongMaterial({ map: moonTexture});
+  const moonGroup = new THREE.Group();
+  const moonMesh = new THREE.Mesh(geometry, moonMaterial);
+  moonMesh.position.set(x, 0, 0);
+  moonMesh.scale.setScalar(scale);
+  moonGroup.add(moonMesh);
+  earthGroup.add(group);
+
   const marsTexture = loader.load("textures/mars.jpg");
   const marsMaterial = new THREE.MeshPhongMaterial({ map: marsTexture });
   const marsGroup = new THREE.Group();
   const marsMesh = new THREE.Mesh(geometry, marsMaterial);
-  createPlanet(scene, marsMesh, marsGroup, 34, 0.8);
+  createPlanet(scene, marsMesh, marsGroup, 37, 0.8);
 
   const jupiterTexture = loader.load("textures/jupiter.jpg");
   const jupiterMaterial = new THREE.MeshPhongMaterial({ map: jupiterTexture });
   const jupiterGroup = new THREE.Group();
   const jupiterMesh = new THREE.Mesh(geometry, jupiterMaterial);
-  createPlanet(scene, jupiterMesh, jupiterGroup, 42, 3.5);
+  createPlanet(scene, jupiterMesh, jupiterGroup, 45, 3.5);
 
   const saturnTexture = loader.load("textures/saturn.jpg");
   const saturnMaterial = new THREE.MeshPhongMaterial({ map: saturnTexture });
   const saturnGroup = new THREE.Group();
   const saturnMesh = new THREE.Mesh(geometry, saturnMaterial);
-  createPlanet(scene, saturnMesh, saturnGroup, 50, 2.9);
+  createPlanet(scene, saturnMesh, saturnGroup, 54, 2.9);
 
   const uranusTexture = loader.load("textures/uranus.jpg");
   const uranusMaterial = new THREE.MeshPhongMaterial({ map: uranusTexture });
   const uranusGroup = new THREE.Group();
   const uranusMesh = new THREE.Mesh(geometry, uranusMaterial);
-  createPlanet(scene, uranusMesh, uranusGroup, 56, 1.7);
+  createPlanet(scene, uranusMesh, uranusGroup, 60, 1.7);
 
   const neptuneTexture = loader.load("textures/neptune.jpg");
   const neptuneMaterial = new THREE.MeshPhongMaterial({ map: neptuneTexture });
   const neptuneGroup = new THREE.Group();
   const neptuneMesh = new THREE.Mesh(geometry, neptuneMaterial);
-  createPlanet(scene, neptuneMesh, neptuneGroup, 60, 1.65);
+  createPlanet(scene, neptuneMesh, neptuneGroup, 65, 1.65);
 
   const plutoTexture = loader.load("textures/pluto.jpeg");
   const plutoMaterial = new THREE.MeshPhongMaterial({ map: plutoTexture });
   const plutoGroup = new THREE.Group();
   const plutoMesh = new THREE.Mesh(geometry, plutoMaterial);
-  createPlanet(scene, plutoMesh, plutoGroup, 64, 0.5);
+  createPlanet(scene, plutoMesh, plutoGroup, 70, 0.5);
 
   // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
@@ -136,6 +145,9 @@ const sketch = ({ context }) => {
 
       earthGroup.rotation.y = time * 0.3;
       earthMesh.rotation.y = time * 0.15;
+
+      //moonGroup.rotation.y = time * 0.3;
+      moonMesh.rotation.y = time * 0.1;
 
       marsGroup.rotation.y = time * 0.2;
       marsMesh.rotation.y = time * 0.2;
