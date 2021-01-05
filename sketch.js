@@ -54,42 +54,31 @@ const sketch = ({ context }) => {
   const sunTexture = loader.load("textures/sun.jpg");
   const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
   const sunMesh = new THREE.Mesh(geometry, sunMaterial);
-  const sunContainer = new THREE.Object3D();
+  const sunContainer = new THREE.Group();
   sunContainer.add(sunMesh);
   sunMesh.position.set(0, 0, 0);
   sunMesh.scale.setScalar(10);
   scene.add(sunContainer);
 
-  // PLANETS
-  // const mercuryTexture = loader.load("textures/mercury.jpg");
-  // const mercuryMaterial = new THREE.MeshLambertMaterial({ map: mercuryTexture });
-  // const mercuryContainer = new THREE.Object3D();
-  // const mercuryMesh = new THREE.Mesh(geometry, mercuryMaterial);
-  // createPlanet(mercuryMesh, mercuryContainer, 25, 0.8, sunContainer);
-  //
-  // const venusTexture = loader.load("textures/venus.jpg");
-  // const venusMaterial = new THREE.MeshLambertMaterial({ map: venusTexture });
-  // const venusContainer = new THREE.Object3D();
-  // const venusMesh = new THREE.Mesh(geometry, venusMaterial);
-  // createPlanet(venusMesh, venusContainer, 30, 0.9, sunContainer);
-
   const moonTexture = loader.load("textures/moon.jpg");
   const moonMaterial = new THREE.MeshLambertMaterial({ map: moonTexture});
-  const moonContainer = new THREE.Object3D();
+  const moonContainer = new THREE.Group();
   const moonMesh = new THREE.Mesh(geometry, moonMaterial);
   moonMesh.castShadow = true;
   moonMesh.receiveShadow = true;
   moonMesh.emissive = new THREE.Color(0xffffff);
-  moonMesh.scale.setScalar(0.2);
+  moonMesh.scale.setScalar(0.3);
   moonContainer.add(moonMesh);
 
   const earthTexture = loader.load("textures/earth.jpg");
   const earthMaterial = new THREE.MeshLambertMaterial({ map: earthTexture});
-  const earthContainer = new THREE.Object3D();
+  const earthContainer = new THREE.Group();
   const earthMesh = new THREE.Mesh(geometry, earthMaterial);
   createPlanet(earthMesh, earthContainer, 40, 2, sunContainer);
   earthContainer.add(moonContainer);
   moonContainer.position.set(4, 0, 0);
+
+
   // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
   light.position.set(0, 0, 0);
@@ -106,9 +95,10 @@ const sketch = ({ context }) => {
       sunMesh.rotation.y = time * 0.05
       sunContainer.rotation.y = time * 0.05;
 
+      earthMesh.rotation.y = time * 0.05
       earthContainer.rotation.y = time * 0.4;
 
-      moonContainer.rotation.y = time * 0.1;
+      moonMesh.rotation.y = time * 0.05
 
       controls.update();
       renderer.render(scene, camera);
