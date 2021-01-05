@@ -54,65 +54,42 @@ const sketch = ({ context }) => {
   const sunTexture = loader.load("textures/sun.jpg");
   const sunMaterial = new THREE.MeshStandardMaterial({ map: sunTexture });
   const sunMesh = new THREE.Mesh(geometry, sunMaterial);
+  const sunContainer = new THREE.Object3D();
+  sunContainer.add(sunMesh);
   sunMesh.position.set(0, 0, 0);
   sunMesh.scale.setScalar(10);
-  scene.add(sunMesh);
+  scene.add(sunContainer);
 
   // PLANETS
-  const mercuryTexture = loader.load("textures/mercury.jpg");
-  const mercuryMaterial = new THREE.MeshLambertMaterial({ map: mercuryTexture });
-  const mercuryGroup = new THREE.Group();
-  const mercuryMesh = new THREE.Mesh(geometry, mercuryMaterial);
-  createPlanet(scene, mercuryMesh, mercuryGroup, 25, 0.8);
+  // const mercuryTexture = loader.load("textures/mercury.jpg");
+  // const mercuryMaterial = new THREE.MeshLambertMaterial({ map: mercuryTexture });
+  // const mercuryContainer = new THREE.Object3D();
+  // const mercuryMesh = new THREE.Mesh(geometry, mercuryMaterial);
+  // createPlanet(mercuryMesh, mercuryContainer, 25, 0.8, sunContainer);
+  //
+  // const venusTexture = loader.load("textures/venus.jpg");
+  // const venusMaterial = new THREE.MeshLambertMaterial({ map: venusTexture });
+  // const venusContainer = new THREE.Object3D();
+  // const venusMesh = new THREE.Mesh(geometry, venusMaterial);
+  // createPlanet(venusMesh, venusContainer, 30, 0.9, sunContainer);
 
-  const venusTexture = loader.load("textures/venus.jpg");
-  const venusMaterial = new THREE.MeshLambertMaterial({ map: venusTexture });
-  const venusGroup = new THREE.Group();
-  const venusMesh = new THREE.Mesh(geometry, venusMaterial);
-  createPlanet(scene, venusMesh, venusGroup, 28, 0.9);
+  const moonTexture = loader.load("textures/moon.jpg");
+  const moonMaterial = new THREE.MeshLambertMaterial({ map: moonTexture});
+  const moonContainer = new THREE.Object3D();
+  const moonMesh = new THREE.Mesh(geometry, moonMaterial);
+  moonMesh.castShadow = true;
+  moonMesh.receiveShadow = true;
+  moonMesh.emissive = new THREE.Color(0xffffff);
+  moonMesh.scale.setScalar(0.2);
+  moonContainer.add(moonMesh);
 
   const earthTexture = loader.load("textures/earth.jpg");
   const earthMaterial = new THREE.MeshLambertMaterial({ map: earthTexture});
-  const earthGroup = new THREE.Group();
+  const earthContainer = new THREE.Object3D();
   const earthMesh = new THREE.Mesh(geometry, earthMaterial);
-  createPlanet(scene, earthMesh, earthGroup, 31, 1);
-
-  const marsTexture = loader.load("textures/mars.jpg");
-  const marsMaterial = new THREE.MeshLambertMaterial({ map: marsTexture });
-  const marsGroup = new THREE.Group();
-  const marsMesh = new THREE.Mesh(geometry, marsMaterial);
-  createPlanet(scene, marsMesh, marsGroup, 34, 0.8);
-
-  const jupiterTexture = loader.load("textures/jupiter.jpg");
-  const jupiterMaterial = new THREE.MeshLambertMaterial({ map: jupiterTexture });
-  const jupiterGroup = new THREE.Group();
-  const jupiterMesh = new THREE.Mesh(geometry, jupiterMaterial);
-  createPlanet(scene, jupiterMesh, jupiterGroup, 42, 3.5);
-
-  const saturnTexture = loader.load("textures/saturn.jpg");
-  const saturnMaterial = new THREE.MeshLambertMaterial({ map: saturnTexture });
-  const saturnGroup = new THREE.Group();
-  const saturnMesh = new THREE.Mesh(geometry, saturnMaterial);
-  createPlanet(scene, saturnMesh, saturnGroup, 50, 2.9);
-
-  const uranusTexture = loader.load("textures/uranus.jpg");
-  const uranusMaterial = new THREE.MeshLambertMaterial({ map: uranusTexture });
-  const uranusGroup = new THREE.Group();
-  const uranusMesh = new THREE.Mesh(geometry, uranusMaterial);
-  createPlanet(scene, uranusMesh, uranusGroup, 56, 1.7);
-
-  const neptuneTexture = loader.load("textures/neptune.jpg");
-  const neptuneMaterial = new THREE.MeshLambertMaterial({ map: neptuneTexture });
-  const neptuneGroup = new THREE.Group();
-  const neptuneMesh = new THREE.Mesh(geometry, neptuneMaterial);
-  createPlanet(scene, neptuneMesh, neptuneGroup, 60, 1.65);
-
-  const plutoTexture = loader.load("textures/pluto.jpeg");
-  const plutoMaterial = new THREE.MeshLambertMaterial({ map: plutoTexture });
-  const plutoGroup = new THREE.Group();
-  const plutoMesh = new THREE.Mesh(geometry, plutoMaterial);
-  createPlanet(scene, plutoMesh, plutoGroup, 64, 0.5);
-
+  createPlanet(earthMesh, earthContainer, 40, 2, sunContainer);
+  earthContainer.add(moonContainer);
+  moonContainer.position.set(4, 0, 0);
   // LIGHTING
   const light = new THREE.PointLight("white", 1.25);
   light.position.set(0, 0, 0);
@@ -127,33 +104,11 @@ const sketch = ({ context }) => {
 
     render({ time }) {
       sunMesh.rotation.y = time * 0.05
+      sunContainer.rotation.y = time * 0.05;
 
-      mercuryGroup.rotation.y = time * 0.5;
-      mercuryMesh.rotation.y = time * 0.20;
+      earthContainer.rotation.y = time * 0.4;
 
-      venusGroup.rotation.y = time * 0.35;
-      venusMesh.rotation.y = time * 0.18;
-
-      earthGroup.rotation.y = time * 0.3;
-      earthMesh.rotation.y = time * 0.15;
-
-      marsGroup.rotation.y = time * 0.2;
-      marsMesh.rotation.y = time * 0.2;
-
-      jupiterGroup.rotation.y = time * 0.05;
-      jupiterMesh.rotation.y = time * 0.05;
-
-      saturnGroup.rotation.y = time * 0.03;
-      saturnMesh.rotation.y = time * 0.25;
-
-      uranusGroup.rotation.y = time * 0.02;
-      uranusMesh.rotation.y = time * 0.25;
-
-      neptuneGroup.rotation.y = time * 0.015;
-      neptuneMesh.rotation.y = time * 0.25;
-
-      plutoGroup.rotation.y = time * 0.005;
-      plutoMesh.rotation.y = time * 0.2;
+      moonContainer.rotation.y = time * 0.1;
 
       controls.update();
       renderer.render(scene, camera);
@@ -166,13 +121,13 @@ const sketch = ({ context }) => {
   };
 };
 
-function createPlanet(scene, mesh, group, x, scale) {
+function createPlanet(mesh, container, orbitRelativeToParent, scale, sunContainer) {
   mesh.castShadow = true;
   mesh.receiveShadow = true;
-  mesh.position.set(x, 0, 0);
   mesh.scale.setScalar(scale);
-  group.add(mesh);
-  scene.add(group);
+  container.add(mesh);
+  sunContainer.add(container);
+  container.position.set(orbitRelativeToParent, 0, 0);
 }
 
 function createSpotlights(scene) {
